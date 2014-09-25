@@ -57,7 +57,8 @@ See doc/install.html for more details.
 二.按照如下步骤，安装go 和 gofmt命令
 1.下载代码：
     git clone https://github.com/embedded-software/loongson-golang.git
-2.$cd ./loongson-golangdeepin
+	并进入下载的代码目录 cd loongson-golang/
+2.$cd ./deepin
 3.$./install.sh 
 
 执行结束，go和gofmt命令就被安装到了src所在目录中的bin目录中。

@@ -115,7 +115,7 @@ func (p *Package) copyBuild(pp *build.Package) {
 	p.IgnoredGoFiles = pp.IgnoredGoFiles
 	p.CFiles = pp.CFiles
 	p.CXXFiles = pp.CXXFiles
-	p.MFiles = pp.MFiles
+	//p.MFiles = pp.MFiles
 	p.HFiles = pp.HFiles
 	p.SFiles = pp.SFiles
 	p.SwigFiles = pp.SwigFiles

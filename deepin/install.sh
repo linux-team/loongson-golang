@@ -5,7 +5,6 @@ echo "GOROOT:$GOROOT"
 export GOROOT=$GOROOT
 export GOTOOLDIR="$GOROOT/bin"
 echo  "GOTOOLDIR:$GOTOOLDIR"
-mkdir $GOROOT/bin
 #rm $GOTOOLDIR/go
 #rm $GOTOOLDIR/gofmt
 CURDIR=$(pwd)
