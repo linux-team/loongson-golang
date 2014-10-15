@@ -34,7 +34,7 @@ cd $CURDIR
 
 # 安装go tools
 GOTOOLDIR=$GOROOT/pkg/tool/linux_mipso32
-mkdir $GOTOOLDIR
+mkdir -p $GOTOOLDIR
 echo "GOTOOLDIR = $GOTOOLDIR"
 #安装cgo
 cp ./buildcgo.bash ../src/cmd/cgo/buildcgo.sh
