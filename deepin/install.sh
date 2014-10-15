@@ -82,5 +82,8 @@ cd $CURDIR
 
 
 echo "*** installed go and gofmt in $GOTOOLDIR ***"
-echo "请将环境变量GOROOT设置为$GOROOT\
-		 将$GOROOT/bin 添加到PATH路径中去"
+echo "请将环境变量GOROOT:
+	 export GOROOT=$GOROOT	
+	  修改PATH环境:
+	 export PATH=\$PATH:$GOBIN
+	 然后就可以使用go build -compiler=gccgo编译 golang工程了"
