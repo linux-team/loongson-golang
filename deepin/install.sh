@@ -3,23 +3,22 @@ GOROOT=$(pwd)
 GOROOT=${GOROOT%/deepin*}
 echo "GOROOT:$GOROOT"
 export GOROOT=$GOROOT
-export GOTOOLDIR="$GOROOT/bin"
-echo  "GOTOOLDIR:$GOTOOLDIR"
-#rm $GOTOOLDIR/go
-#rm $GOTOOLDIR/gofmt
+export GOBIN="$GOROOT/bin"
+echo  "GOBIN:$GOBIN"
 CURDIR=$(pwd)
 #   echo "$CURDIR"
+#	安装go命令
 cp ./buildgo.bash ../src/cmd/go/buildgo.sh
 cp ./zdefaultcc.go ../src/cmd/go
 mv ../src/cmd/go/pkg.go ../src/cmd/go/pkg_backup
 cp ./pkg.go ../src/cmd/go/pkg.go
 
 cd ../src/cmd/go
-chmod 777 buildgo.sh
+chmod 777 ./buildgo.sh
 ./buildgo.sh
-cp ./go $GOTOOLDIR/
-rm buildgo.sh go zdefaultcc.go pkg.go
-mv pkg_backup pkg.go
+cp ./go $GOBIN/
+rm ./buildgo.sh ./go ./zdefaultcc.go ./pkg.go
+mv ./pkg_backup ./pkg.go
 echo "go installed succeed"
 cd $CURDIR
 echo "$(pwd)"
@@ -27,11 +26,60 @@ echo "$(pwd)"
 #安装gofmt
 cp ./buildgofmt.bash ../src/cmd/gofmt/buildgofmt.sh
 cd ../src/cmd/gofmt
-chmod 777 buildgofmt.sh
+chmod 777 ./buildgofmt.sh
 ./buildgofmt.sh
-cp ./gofmt $GOTOOLDIR/
-rm buildgofmt.sh gofmt
+cp ./gofmt $GOBIN/
+rm ./buildgofmt.sh ./gofmt
 cd $CURDIR
+
+# 安装go tools
+GOTOOLDIR=$GOROOT/pkg/tool/linux_mipso32
+mkdir $GOTOOLDIR
+echo "GOTOOLDIR = $GOTOOLDIR"
+#安装cgo
+cp ./buildcgo.bash ../src/cmd/cgo/buildcgo.sh
+cp ./zdefaultcc.go ../src/cmd/cgo/
+mv ../src/cmd/cgo/main.go ../src/cmd/cgo/oldmain_go
+cp ./main.go ../src/cmd/cgo/
+cd ../src/cmd/cgo
+chmod 777 buildcgo.sh
+./buildcgo.sh
+cp ./cgo $GOTOOLDIR
+rm ./main.go
+mv ./oldmain_go ./main.go
+rm ./cgo
+rm ./buildcgo.sh
+cd $CURDIR
+
+#编译fix
+cp ./buildfix.bash ../src/cmd/fix/buildfix.sh
+cd ../src/cmd/fix
+chmod 777 buildfix.sh
+./buildfix.sh
+mv ./fix $GOTOOLDIR/
+rm buildfix.sh
+cd $CURDIR
+
+# 安装pack
+cp ./buildpack.bash ../src/cmd/pack/buildpack.sh
+cd ../src/cmd/pack
+chmod 777 buildpack.sh
+./buildpack.sh
+cp ./pack $GOTOOLDIR/
+rm buildpack.sh pack
+cd $CURDIR
+
+# 安装yacc
+cp ./buildyacc.bash ../src/cmd/yacc/buildyacc.sh
+cd ../src/cmd/yacc
+chmod 777 buildyacc.sh
+./buildyacc.sh
+cp ./yacc $GOTOOLDIR/
+rm buildyacc.sh yacc
+cd $CURDIR
+
+
+
 
 echo "*** installed go and gofmt in $GOTOOLDIR ***"
 echo "请将环境变量GOROOT设置为$GOROOT\
