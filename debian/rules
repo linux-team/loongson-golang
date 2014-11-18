@@ -1,0 +1,94 @@
+#!/usr/bin/make -f
+# -*- makefile -*-
+
+# Uncomment this to turn on verbose mode.
+#export DH_VERBOSE=1
+
+%:
+	dh $@ --parallel
+
+override_dh_auto_clean:
+	rm src/cmd/go/loongson-golang || true
+	rm src/cmd/go/buildgo.sh || true
+	rm src/cmd/go/zdefaultcc.go || true
+	mv src/cmd/go/pkg_backup src/cmd/go/pkg.go || true
+	#mv src/cmd/go/tool_backup src/cmd/go/tool.go || true
+
+	rm src/cmd/gofmt/gofmt || true
+	rm src/cmd/gofmt/buildgofmt.sh || true
+
+	rm src/cmd/cgo/cgo || true
+	rm src/cmd/cgo/buildcgo.sh || true
+	rm src/cmd/cgo/zdefaultcc.go || true
+	mv src/cmd/cgo/oldmain_go src/cmd/cgo/main.go || true
+
+	rm src/cmd/fix/fix || true
+	rm src/cmd/fix/buildfix.sh || true
+
+	rm src/cmd/pack/pack || true
+	rm src/cmd/pack/buildpack.sh || true
+
+	rm src/cmd/yacc/yacc || true
+	rm src/cmd/yacc/buildyacc.sh || true
+
+override_dh_strip:
+	# strip disabled as golang upstream doesn't support it and it makes go
+	# crash. See http://bugs.debian.org/717172
+
+override_dh_auto_build:
+	cp debian/deepin/buildgo.bash src/cmd/go/buildgo.sh
+	cp debian/deepin/zdefaultcc.go src/cmd/go/
+	mv src/cmd/go/pkg.go src/cmd/go/pkg_backup
+	#mv src/cmd/go/tool.go src/cmd/go/tool_backup
+	#cp debian/deepin/tool.go src/cmd/go/tool.go
+	cp debian/deepin/pkg.go src/cmd/go/pkg.go
+	cd src/cmd/go
+	chmod +x src/cmd/go/buildgo.sh
+	cd src/cmd/go && ./buildgo.sh
+
+	cp debian/deepin/buildgofmt.bash src/cmd/gofmt/buildgofmt.sh
+	chmod +x src/cmd/gofmt/buildgofmt.sh
+	cd src/cmd/gofmt && ./buildgofmt.sh
+
+	cp debian/deepin/buildcgo.bash src/cmd/cgo/buildcgo.sh
+	cp debian/deepin/zdefaultcc.go src/cmd/cgo/
+	mv src/cmd/cgo/main.go src/cmd/cgo/oldmain_go
+	cp debian/deepin/main.go src/cmd/cgo/
+	chmod +x src/cmd/cgo/buildcgo.sh
+	cd src/cmd/cgo/ && ./buildcgo.sh
+
+	cp debian/deepin/buildfix.bash src/cmd/fix/buildfix.sh
+	chmod +x src/cmd/fix/buildfix.sh
+	cd src/cmd/fix && ./buildfix.sh
+
+	cp debian/deepin/buildpack.bash src/cmd/pack/buildpack.sh
+	chmod +x src/cmd/pack/buildpack.sh
+	cd src/cmd/pack && ./buildpack.sh
+
+	cp debian/deepin/buildyacc.bash src/cmd/yacc/buildyacc.sh
+	chmod +x src/cmd/yacc/buildyacc.sh
+	cd src/cmd/yacc && ./buildyacc.sh
+
+override_dh_auto_install:
+	install -d debian/loongson-golang/usr/bin/
+	install -d debian/loongson-golang/usr/
+	install -d debian/loongson-golang/usr/pkg/tool/linux_mipso32
+
+	install -D src/cmd/go/loongson-golang debian/loongson-golang/usr/bin/
+	install -D src/cmd/gofmt/gofmt debian/loongson-golang/usr/bin/
+
+	install -D src/cmd/cgo/cgo debian/loongson-golang/usr/pkg/tool/linux_mipso32
+	install -D src/cmd/fix/fix debian/loongson-golang/usr/pkg/tool/linux_mipso32
+	install -D src/cmd/pack/pack debian/loongson-golang/usr/pkg/tool/linux_mipso32
+	install -D src/cmd/yacc/yacc debian/loongson-golang/usr/pkg/tool/linux_mipso32
+
+	cp -a api debian/loongson-golang/usr/
+	cp -a doc debian/loongson-golang/usr/
+	cp -a lib debian/loongson-golang/usr/
+	cp -a misc debian/loongson-golang/usr/
+	cp -a src debian/loongson-golang/usr/
+	cp -a test debian/loongson-golang/usr/
+
+override_dh_shlibdeps:
+
+
