@@ -1,4 +1,6 @@
-This is the source code repository for the Go programming language.  
+Build from Golang 1.3.1
+
+This is the source code repository for the Go programming language.
 
 For documentation about how to install and use Go,
 visit http://golang.org/ or load doc/install-source.html
@@ -30,43 +32,3 @@ put the following in your .profile:
     export PATH=$PATH:$GOROOT/bin
 
 See doc/install.html for more details.
-
-注意：
-    如果是mips架构，那么golang目前还不支持原生的编译器，但是我们任然可以使
-用go 和 gofmt命令，这两个命令能高效地管理golang代码和控制代码的编译安装. 
-    下面我们就着手编译安装go和gofmt命令.
-    由于龙芯只能用gccgo编译golang程序,所以需要先安装gccgo-4.9.0或以上版本.
-一.安装gccgo并配置环境
-1.你可以通过如下方式获得gccgo的源代码:
-    git clone https://github.com/embedded-software/loongson-gccgo.git
-
-2.安装好gccgo之后,请设置好环境变量:
-    比如你的gcc的安装路径是 /_install
-    那么环境配置如下:
-    export GCCDIR=/_install
-    export INCLUDE_PATH=$GCCDIR/include:$GCCDIR/include/c++/4.9.1/tr1/
-    export LIBRARY_PATH=$GCCDIR/lib/gcc/mips64el-unknown-linux-gnu/4.9.1:$GCCDIR/lib:$GCCDIR/lib/go/4.9.1/mips64el-unknown-linux-gnu/:$LIBRARY_PATH
-    export LD_LIBRARY_PATH=$GCCDIR/lib:$GCCDIR/lib64:$GCCDIR/lib32:$LD_LIBRARY_PATH
-    export PATH=$GCCDIR/bin:$PATH
-    export MANPATH=$GCCDIR/share/man:$MANPATH
-    
-    为了方便,你只需要将你配置时指定的--prefix目录替换掉上述命令中的/_install,可以将上述命令直接写入~/.bashrc,然后source ~/.bashrc
-
-	完成以上工作,就能开始编译安装go和gofmt命令了
-
-二.按照如下步骤，安装go 和 gofmt命令
-1.下载代码：
-    git clone https://github.com/embedded-software/loongson-golang.git
-	并进入下载的代码目录 cd loongson-golang/
-2.$cd ./deepin
-3.$./install.sh 
-
-执行结束，go和gofmt命令就被安装到了src所在目录中的bin目录中。
-3.设置go的环境变量：
-    请将刚刚用git clone下载的loongson-golang目录,设置为GOROOT
-    export GOOOT= ...(你的loongson-golang路径)
-    export GOTOOLDIR=...(你的loongson-golang/bin)
-    export PATH=$PATH:$GOTOOLDIR
-    同样的,你可以将上面命令写入 ~/.bashrc 然后source ~/.bashrc
-
-    到此,你就能使用go命令了
